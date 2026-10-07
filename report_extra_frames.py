@@ -1,7 +1,11 @@
 #!/usr/bin/env python3
 import os
 import sys
+import logging
 import eyed3
+
+# Lame tag CRC warnings are harmless noise for this report
+logging.getLogger("eyed3").setLevel(logging.ERROR)
 
 # Allowed frames
 ALLOWED_IDS = {"TIT2", "TALB", "TPE1", "TCON", "TRCK", "TPOS", "APIC"}
