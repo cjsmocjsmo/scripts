@@ -3,9 +3,9 @@ import os
 import sys
 import eyed3
 
-# Allowed frames and image descriptions
+# Allowed frames
 ALLOWED_IDS = {"TIT2", "TALB", "TPE1", "TCON", "TRCK", "TPOS", "APIC"}
-ALLOWED_APIC_DESCS = {"", "Cover (front)", "Front Cover"}
+FRONT_COVER = 3  # ID3 APIC picture type for front cover
 
 def inspect_mp3(filepath):
     try:
@@ -15,28 +15,21 @@ def inspect_mp3(filepath):
 
         extra_items = []
         
-        # Check standard ID3 frames
-        for frame in audiofile.tag.frame_set.values():
-            frame_id = frame.id
+        for raw_id, frames in audiofile.tag.frame_set.items():
+            frame_id = raw_id.decode("ascii", "replace") if isinstance(raw_id, bytes) else str(raw_id)
             if frame_id not in ALLOWED_IDS:
-                extra_items.append(f"Frame: {frame_id}")
+                extra_items.append(f"Frame: {frame_id} (x{len(frames)})")
             elif frame_id == "APIC":
-                # Ensure it's a front cover image
-                desc = getattr(frame, "description", "")
-                picture_type = getattr(frame, "picture_type", None)
-                
-                # eyed3 picture_type 3 is usually Front Cover
-                is_front_cover = (
-                    desc in ALLOWED_APIC_DESCS or 
-                    picture_type == 3
-                )
-                if not is_front_cover:
-                    extra_items.append(f"APIC Image (Description: '{desc}', Type: {picture_type})")
+                for frame in frames:
+                    picture_type = getattr(frame, "picture_type", None)
+                    if picture_type != FRONT_COVER:
+                        desc = getattr(frame, "description", "")
+                        extra_items.append(f"APIC Image (Description: '{desc}', Type: {picture_type})")
 
         return extra_items
 
     except Exception as e:
-        return [f"Error reading file: {e}"]
+        return [f"Error reading file ({type(e).__name__}): {e}"]
 
 def main():
     if len(sys.argv) < 2:
