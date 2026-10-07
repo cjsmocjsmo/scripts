@@ -83,6 +83,7 @@ rename -n 's{^(\d{2}) - (.+)\.flac$}{ "1_" . $1 . "_-_The_Moody_Blues_-_The_Pres
 
 
 find . -name "*.mp3" -exec eyeD3 \
+    --remove-all-lyrics \
     --remove-frame TPUB \
     --remove-frame TXXX \
     --remove-frame COMM \
@@ -101,4 +102,5 @@ find . -name "*.mp3" -exec eyeD3 \
     --remove-frame TBPM \
     --remove-frame TPE3 \
     --remove-frame TPE4 \
+    --remove-frame UFID \
     --remove-frame RGAD {} +
