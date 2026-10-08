@@ -103,4 +103,14 @@ find . -name "*.mp3" -exec eyeD3 \
     --remove-frame TPE3 \
     --remove-frame TPE4 \
     --remove-frame UFID \
+    --remove-frame TCMP \
+    --remove-frame TSSE \
+    --remove-frame TLAN \
+    --remove-frame SYLT \
+    --remove-frame TCOP \
+    --remove-frame TLEN \
+    --remove-frame MCDI \
+    --remove-frame PRIV \
+    --remove-frame TDRL \
+    --remove-frame TENC \
     --remove-frame RGAD {} +
