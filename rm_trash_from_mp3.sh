@@ -59,6 +59,12 @@ find . -name "*.flac" -exec metaflac --remove-tag=DATE \
 	--remove-tag='RELEASESTATUS' \
 	--remove-tag='RELEASETYPE' \
 	--remove-tag='SCRIPT' \
+	--remove-tag='WWW' \
+	--remove-tag='DISCOGS_RELEASE_ID' \
+	--remove-tag='CATALOGID' \
+	--remove-tag='MEDIATYPE' \
+	--remove-tag='STYLE' \
+	--remove-tag='COUNTRY' \
 	--remove-tag='WORK' {} +
 
 rename -n 's/^(\d+)[.\-\s]+\s*(.*?)\.flac$/ my $num = $1; my $t = $2; $t =~ s{ }{_}g; "1_${num}_-_Van_Halen_-_A_Differnt_Kind_Of_Truth_-_$t.flac"/e' *.flac
